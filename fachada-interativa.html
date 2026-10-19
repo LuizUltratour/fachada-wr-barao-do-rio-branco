@@ -484,6 +484,7 @@ var PARTS  = ASSETS + 'partes-separadas/';
 var LOC_IDX = 3;
 
 // Mapeamento pavimento → índice do panorama:
+// Pavimentos com hide:true ficam ocultos (temporário) — remova o hide para reexibir.
 // 34º = 6 e, daí para baixo, passo de 3 (32º=9, 30º=12 …, 6º=48). Só os pavimentos pares com panorama.
 var FI = {
   full: ASSETS + 'fachada.png',   // fachada completa (base em repouso)
@@ -498,14 +499,14 @@ var FI = {
     { id:'b14-22', n:'B', range:'14º ao 22º Pavimento', hint:'Pavimentos intermediários',
       seg: PARTS + '14-22-normal.png', sel: ASSETS + 'fachada-14-22.png', zone:[40, 68],
       floors:[
-        { label:'22º', idx:24 }, { label:'20º', idx:27 }, { label:'18º', idx:30 },
-        { label:'16º', idx:33 }, { label:'14º', idx:36 }
+        { label:'22º', idx:24 }, { label:'20º', idx:27 }, { label:'18º', idx:30, hide:true },
+        { label:'16º', idx:33 }, { label:'14º', idx:36, hide:true }
       ]
     },
     { id:'b4-12', n:'A', range:'6º ao 12º Pavimento', hint:'Pavimentos iniciais',
       seg: PARTS + '4-12-normal.png', sel: ASSETS + 'fachada-4-12.png', zone:[68, 100],
       floors:[
-        { label:'12º', idx:39 }, { label:'10º', idx:42 }, { label:'8º', idx:45 }, { label:'6º', idx:48 }
+        { label:'12º', idx:39, hide:true }, { label:'10º', idx:42, hide:true }, { label:'8º', idx:45 }, { label:'6º', idx:48 }
       ]
     }
   ],
@@ -709,7 +710,7 @@ function updatePanel(b) {
 
   elViewsBand.textContent = b.range;
   elChips.innerHTML = '';
-  b.floors.forEach(function (f, i) {
+  b.floors.filter(function (f) { return !f.hide; }).forEach(function (f, i) {
     var c = document.createElement('button');
     c.className = 'fi-chip ' + (f.idx != null ? 'enabled' : 'soon') + (f.cob ? ' cob' : '');
     c.style.animationDelay = (0.04 * i) + 's';
@@ -729,7 +730,7 @@ function updatePanel(b) {
 function renderModalFloors(b) {
   elModalTitle.textContent = b.range;
   elModalChips.innerHTML = '';
-  b.floors.forEach(function (f, i) {
+  b.floors.filter(function (f) { return !f.hide; }).forEach(function (f, i) {
     var c = document.createElement('button');
     c.className = 'fi-mchip' + (f.idx == null ? ' soon' : '');
     c.style.animationDelay = (0.03 * i) + 's';

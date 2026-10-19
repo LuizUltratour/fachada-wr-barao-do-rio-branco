@@ -484,28 +484,28 @@ var PARTS  = ASSETS + 'partes-separadas/';
 var LOC_IDX = 3;
 
 // Mapeamento pavimento → índice do panorama:
-// 34º = 7 e, daí para baixo, passo de 3 (32º=10, 30º=13 …, 6º=49). Só os pavimentos pares com panorama.
+// 34º = 6 e, daí para baixo, passo de 3 (32º=9, 30º=12 …, 6º=48). Só os pavimentos pares com panorama.
 var FI = {
   full: ASSETS + 'fachada.png',   // fachada completa (base em repouso)
   bands: [
     { id:'b24-34', n:'C', range:'24º ao 34º Pavimento', hint:'Pavimentos altos',
       seg: PARTS + '24-34-normal.png', sel: ASSETS + 'fachada-24-34.png', zone:[0, 40],
       floors:[
-        { label:'34º', idx:7 },  { label:'32º', idx:10 }, { label:'30º', idx:13 },
-        { label:'28º', idx:16 }, { label:'26º', idx:19 }, { label:'24º', idx:22 }
+        { label:'34º', idx:6 },  { label:'32º', idx:9 }, { label:'30º', idx:12 },
+        { label:'28º', idx:15 }, { label:'26º', idx:18 }, { label:'24º', idx:21 }
       ]
     },
     { id:'b14-22', n:'B', range:'14º ao 22º Pavimento', hint:'Pavimentos intermediários',
       seg: PARTS + '14-22-normal.png', sel: ASSETS + 'fachada-14-22.png', zone:[40, 68],
       floors:[
-        { label:'22º', idx:25 }, { label:'20º', idx:28 }, { label:'18º', idx:31 },
-        { label:'16º', idx:34 }, { label:'14º', idx:37 }
+        { label:'22º', idx:24 }, { label:'20º', idx:27 }, { label:'18º', idx:30 },
+        { label:'16º', idx:33 }, { label:'14º', idx:36 }
       ]
     },
     { id:'b4-12', n:'A', range:'4º ao 12º Pavimento', hint:'Pavimentos iniciais',
       seg: PARTS + '4-12-normal.png', sel: ASSETS + 'fachada-4-12.png', zone:[68, 100],
       floors:[
-        { label:'12º', idx:40 }, { label:'10º', idx:43 }, { label:'8º', idx:46 }, { label:'6º', idx:49 }
+        { label:'12º', idx:39 }, { label:'10º', idx:42 }, { label:'8º', idx:45 }, { label:'6º', idx:48 }
       ]
     }
   ],

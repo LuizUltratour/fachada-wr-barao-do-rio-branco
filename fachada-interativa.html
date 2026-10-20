@@ -806,7 +806,7 @@ function reset() {
 function goToPanorama(idx, usePeriod) {
   if (idx == null) return;
   if (window.parent !== window) {
-    window.parent.postMessage({ action: 'goToPanorama', mediaIndex: idx, period: usePeriod !== false }, '*');
+    window.parent.postMessage({ action: 'wrfi:goToPanorama', mediaIndex: idx, period: usePeriod !== false }, '*');
   } else {
     // modo standalone (teste fora do 3DVista)
     try {
@@ -824,7 +824,7 @@ function goToLocation() { goToPanorama(LOC_IDX); }
 
 // ── fechar ──
 function closeScreen() {
-  if (window.parent !== window) window.parent.postMessage({ action: 'closeGallery' }, '*');
+  if (window.parent !== window) window.parent.postMessage({ action: 'wrfi:close' }, '*');
   else if (window.history.length > 1) history.back();
   else window.close();
 }

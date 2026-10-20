@@ -3,7 +3,7 @@
 
   Uso:
     ./deploy.ps1             # sync dos assets da fachada + HTML
-    ./deploy.ps1 -QuickHtml  # atualiza só o fachada-interativa.html (rápido)
+    ./deploy.ps1 -QuickHtml  # atualiza só o fachada-interativa.html e o inject.js (rápido)
 
   Pré-requisitos (uma única vez):
     1. AWS CLI instalado  -> https://aws.amazon.com/cli/
@@ -68,8 +68,9 @@ function Copy-Html($file) {
 }
 
 if ($QuickHtml) {
-  Write-Host 'Atualizando apenas fachada-interativa.html...' -ForegroundColor Green
+  Write-Host 'Atualizando apenas fachada-interativa.html e inject.js...' -ForegroundColor Green
   Copy-Html 'fachada-interativa.html'
+  Copy-Html 'inject.js'
 }
 else {
   # Sync apenas dos assets usados pela fachada interativa (imagens da torre,
@@ -80,8 +81,9 @@ else {
   }
 
   # O HTML precisa de cache-control para o 3DVista nunca servir versao cacheada
-  Write-Host 'Enviando HTML com cache-control...' -ForegroundColor Green
+  Write-Host 'Enviando HTML/JS com cache-control...' -ForegroundColor Green
   Copy-Html 'fachada-interativa.html'
+  Copy-Html 'inject.js'
 }
 
 Write-Host 'Deploy concluido.' -ForegroundColor Green

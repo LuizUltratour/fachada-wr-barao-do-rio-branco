@@ -2,8 +2,6 @@
   'use strict';
 
   var BASE = 'https://skylineip.s3.sa-east-1.amazonaws.com/Tour+Virtual/wr-construtora/ferramentas/fachada-barao-do-rio-branco/';
-  var GALLERY_URL       = BASE + 'index.html';
-  var VIDEO_GALLERY_URL = BASE + 'video-gallery.html';
   var FACHADA_URL       = BASE + 'fachada-interativa.html';
 
   var overlay    = null;
@@ -94,19 +92,19 @@
 
   // 0 = diurno · 1 = entardecer · 2 = noturno
   function _period() {
-    var forced = w.VERIDIAN_PERIODO;
+    var forced = w.WR_PERIODO;
     if (forced === 0 || forced === 1 || forced === 2) return forced;   // definido na action
     var pr = _periodOf(_currentIndex().i);
     return pr == null ? 0 : pr;                                        // na dúvida, diurno
   }
 
   function _injectStyles() {
-    if (d.getElementById('_gc_styles')) return;
+    if (d.getElementById('_wrfi_styles')) return;
     var s = d.createElement('style');
-    s.id = '_gc_styles';
+    s.id = '_wrfi_styles';
     s.textContent =
-      '@keyframes _gcIn{from{opacity:0}to{opacity:1}}' +
-      '@keyframes _gcOut{to{opacity:0}}';
+      '@keyframes _wrfiIn{from{opacity:0}to{opacity:1}}' +
+      '@keyframes _wrfiOut{to{opacity:0}}';
     d.head.appendChild(s);
   }
 
@@ -115,10 +113,10 @@
     _injectStyles();
 
     overlay = d.createElement('div');
-    overlay.id = '_gc_overlay';
+    overlay.id = '_wrfi_overlay';
     overlay.style.cssText =
       'position:fixed;inset:0;z-index:2147483646;' +
-      'animation:_gcIn 0.3s ease both;';
+      'animation:_wrfiIn 0.3s ease both;';
 
     var iframe = d.createElement('iframe');
     iframe.src = iframeSrc;
@@ -129,9 +127,9 @@
     d.body.appendChild(overlay);
 
     msgHandler = function (e) {
-      if (!e.data) return;
-      if (e.data.action === 'closeGallery') _close();
-      else if (e.data.action === 'goToPanorama') _goToPanorama(e.data.mediaIndex, e.data.period === true);
+      if (!e.data || !iframe.contentWindow || e.source !== iframe.contentWindow) return;
+      if (e.data.action === 'wrfi:close') _close();
+      else if (e.data.action === 'wrfi:goToPanorama') _goToPanorama(e.data.mediaIndex, e.data.period === true);
     };
     w.addEventListener('message', msgHandler);
   }
@@ -164,13 +162,9 @@
     }
   }
 
-  function _open(mode) {
-    _mount(GALLERY_URL + '?mode=' + encodeURIComponent(mode || 'imagens') + '&v=' + Date.now(), '#F6EFE2');
-  }
-
   function _close() {
     if (!overlay) return;
-    overlay.style.animation = '_gcOut 0.25s ease forwards';
+    overlay.style.animation = '_wrfiOut 0.25s ease forwards';
     var ref = overlay;
     setTimeout(function () {
       if (ref.parentNode) ref.parentNode.removeChild(ref);
@@ -183,44 +177,28 @@
   }
 
   // ── API pública ──────────────────────────────────────────────
-  // GaleriaImagens(1) → abre galeria de imagens · GaleriaImagens(0) → fecha
-  w.GaleriaImagens = function (show) {
-    if (show === 1) _open('imagens'); else _close();
-  };
-
-  // GaleriaPlantas(1) → abre galeria de plantas · GaleriaPlantas(0) → fecha
-  w.GaleriaPlantas = function (show) {
-    if (show === 1) _open('plantas'); else _close();
-  };
-
-  // AbrirGaleriaVideos(1) → abre o vídeo teaser · AbrirGaleriaVideos(0) → fecha
-  w.AbrirGaleriaVideos = function (show) {
-    if (show === 1) _mount(VIDEO_GALLERY_URL + '?v=' + Date.now(), '#052E34', 'fullscreen; autoplay');
-    else _close();
-  };
-
   // ── Período: diagnóstico e override ───────────────────────────
-  // VeridianPeriodo()      → o que o script está detectando agora (para conferir)
-  // VeridianPeriodo(0|1|2) → força diurno | entardecer | noturno
-  // VeridianPeriodo(null)  → volta para a detecção automática
+  // PeriodoWR()      → o que o script está detectando agora (para conferir)
+  // PeriodoWR(0|1|2) → força diurno | entardecer | noturno
+  // PeriodoWR(null)  → volta para a detecção automática
   var NOMES = ['diurno', 'entardecer', 'noturno'];
-  w.VeridianPeriodo = function (p) {
-    if (p === 0 || p === 1 || p === 2) { w.VERIDIAN_PERIODO = p; return NOMES[p]; }
-    if (p === null) { w.VERIDIAN_PERIODO = undefined; }
+  w.PeriodoWR = function (p) {
+    if (p === 0 || p === 1 || p === 2) { w.WR_PERIODO = p; return NOMES[p]; }
+    if (p === null) { w.WR_PERIODO = undefined; }
     var c = _currentIndex(), pr = _period();
     return {
       indiceAtual: c.i,
       via: c.via,
       periodo: pr,
       nome: NOMES[pr],
-      forcado: (w.VERIDIAN_PERIODO === 0 || w.VERIDIAN_PERIODO === 1 || w.VERIDIAN_PERIODO === 2),
+      forcado: (w.WR_PERIODO === 0 || w.WR_PERIODO === 1 || w.WR_PERIODO === 2),
       detectou: c.i !== null
     };
   };
 
-  // VeridianDebug() → texto com o que o tour expõe. Se a detecção falhar,
+  // DebugWR() → texto com o que o tour expõe. Se a detecção falhar,
   // rode isso e mande o resultado: dá para ver qual API o projeto oferece.
-  w.VeridianDebug = function () {
+  w.DebugWR = function () {
     var p = _player(), out = [], k, pl, lists;
     out.push('player encontrado: ' + (p ? 'sim' : 'NAO'));
     if (p) {
@@ -257,7 +235,7 @@
   //
   // Ao clicar em "ver vista" o panorama troca por setMediaByIndex (sem reload),
   // as telas indicadas são ocultadas/exibidas por toggleAny e a fachada fecha.
-  w.AbrirFachada = function (arg, hide, show) {
+  w.AbrirFachadaWR = w.AbrirFachada = function (arg, hide, show) {
     if (arg === 0 || arg === false || arg == null) { _close(); return; }
     if (typeof arg === 'object') fdvPlayer = arg;   // captura o player (this)
     if (hide !== undefined) hideId = hide || null;

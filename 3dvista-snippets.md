@@ -1,4 +1,4 @@
-# Trechos para colar no 3DVista — Veridian Patamares
+# Trechos para colar no 3DVista — WR Barão do Rio Branco
 
 Copie daqui. Cada bloco é independente.
 
@@ -16,47 +16,7 @@ Copie daqui. Cada bloco é independente.
 
 ---
 
-## 2. Galerias — cole na **action** do hotspot/botão
-
-Abrir a galeria de imagens:
-
-```js
-GaleriaImagens(1);
-```
-
-Fechar a galeria de imagens:
-
-```js
-GaleriaImagens(0);
-```
-
-Abrir a galeria de plantas:
-
-```js
-GaleriaPlantas(1);
-```
-
-Fechar a galeria de plantas:
-
-```js
-GaleriaPlantas(0);
-```
-
-Abrir o vídeo:
-
-```js
-AbrirGaleriaVideos(1);
-```
-
-Fechar o vídeo:
-
-```js
-AbrirGaleriaVideos(0);
-```
-
----
-
-## 3. Fachada interativa — cole na **action** do hotspot/botão
+## 2. Fachada interativa — cole na **action** do hotspot/botão
 
 > Tem de ser numa *action* do 3DVista, onde `this` é o player. É por `this` que o
 > script acha o `setMediaByIndex` para trocar o panorama sem recarregar o tour.
@@ -93,25 +53,25 @@ AbrirFachada(this, null, null);
 
 ---
 
-## 4. Período do dia (diurno / entardecer / noturno)
+## 3. Período do dia (diurno / entardecer / noturno)
 
 Na maioria dos casos **não precisa fazer nada**: o script lê o panorama atual e soma
 sozinho o deslocamento (diurno +0, entardecer +1, noturno +2) ao pavimento escolhido.
 
 > A URL do tour **não muda** — isso é esperado. Só significa que o `setMediaByIndex`
 > funcionou e não precisamos do `?media-index=`. Não serve para saber se o período foi
-> aplicado; use o `VeridianPeriodo()` abaixo.
+> aplicado; use o `PeriodoWR()` abaixo.
 
 Para conferir o que ele está detectando, cole numa action de teste:
 
 ```js
-alert(JSON.stringify(VeridianPeriodo()));
+alert(JSON.stringify(PeriodoWR()));
 ```
 
 Se precisar de mais detalhe (para me mandar), use:
 
 ```js
-alert(VeridianDebug());
+alert(DebugWR());
 ```
 
 Se aparecer `"detectou":false`, o tour não expõe o índice atual. Nesse caso, cole uma
@@ -120,30 +80,30 @@ linha em cada botão do menu de período:
 Botão **Diurno**:
 
 ```js
-VeridianPeriodo(0);
+PeriodoWR(0);
 ```
 
 Botão **Entardecer**:
 
 ```js
-VeridianPeriodo(1);
+PeriodoWR(1);
 ```
 
 Botão **Noturno**:
 
 ```js
-VeridianPeriodo(2);
+PeriodoWR(2);
 ```
 
 Voltar para a detecção automática:
 
 ```js
-VeridianPeriodo(null);
+PeriodoWR(null);
 ```
 
 ---
 
-## 5. Conferir o mapa de índices do tour
+## 4. Conferir o mapa de índices do tour
 
 Cole no **console do navegador** (F12) com o tour aberto. Lista todas as cenas com o
 índice que o `setMediaByIndex` usa — serve para confirmar o mapeamento dos pavimentos,

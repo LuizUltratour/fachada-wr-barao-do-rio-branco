@@ -67,11 +67,11 @@
       pointer-events: none;
     }
 
-    /* torre: metade direita da fachada (259 x 1053) — a metade esquerda do PNG é vazia e é cortada aqui */
+    /* torre: a cena inteira da fachada (700 x 1053); o prédio ocupa de x=235 a x=494 (33,57% → 70,57%) */
     #fi-tower {
       position: relative;
       height: 92%;
-      aspect-ratio: 259 / 1053;
+      aspect-ratio: 700 / 1053;
       max-width: 92%;
       opacity: 0;
       transform: translateY(18px) scale(0.99);
@@ -90,7 +90,7 @@
 
     /* placeholder: a fachada completa (render bonito) — visível em repouso */
     .fi-placeholder {
-      position: absolute; top: 0; left: -100%; width: 200%; height: 100%;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: fill;
       opacity: 1; transition: opacity 0.45s var(--ease);
       pointer-events: none; user-select: none; -webkit-user-drag: none;
@@ -101,7 +101,7 @@
     /* camadas "-selected": a fachada com só uma faixa em foco (resto fantasma).
        Cross-fade por opacity sobre o placeholder. */
     .fi-sel {
-      position: absolute; top: 0; left: -100%; width: 200%; height: 100%;
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: fill;
       opacity: 0; transition: opacity 0.45s var(--ease);
       pointer-events: none; user-select: none; -webkit-user-drag: none;
@@ -120,9 +120,9 @@
       will-change: transform, opacity;
       backface-visibility: hidden;
     }
-    /* As partes separadas (259 x 1053) têm a mesma altura da torre e já trazem a
-       posição vertical embutida (área transparente) — basta cobrir a torre toda. */
-    .fi-band-img { left: 0; top: 0; width: 100%; }
+    /* As partes separadas (259 x 1053) têm a mesma altura da cena e já trazem a posição
+       vertical embutida (área transparente); ficam em x=235 (33,57%) com 37% de largura. */
+    .fi-band-img { left: 33.57%; top: 0; width: 37%; }
     .fi-band-img[data-band="b24-34"] { z-index: 5; }
     .fi-band-img[data-band="b14-22"] { z-index: 4; }
     .fi-band-img[data-band="b4-12"]  { z-index: 3; }
@@ -133,7 +133,7 @@
     /* zonas clicáveis sobre a torre (metade esquerda) */
     #fi-zones { position: absolute; inset: 0; z-index: 3; }
     .fi-zone {
-      position: absolute; left: 0; width: 100%; cursor: pointer;
+      position: absolute; left: 33.57%; width: 37%; cursor: pointer;
       border-radius: 10px;
       transition: background 0.3s var(--ease);
     }
@@ -158,7 +158,7 @@
 
     /* escala vertical de andares — à direita da silhueta do prédio */
     #fi-scale {
-      position: absolute; top: 3%; bottom: 6%; left: 108%;
+      position: absolute; top: 3%; bottom: 6%; left: 102%;
       width: 1px; background: linear-gradient(to bottom, transparent, var(--border-strong) 10%, var(--border-strong) 90%, transparent);
       z-index: 2; pointer-events: none;
       opacity: 0; animation: fadeIn 0.8s ease 0.7s forwards;
@@ -362,8 +362,9 @@
         height: 100%;
         width: auto;
         max-width: none;
-        margin-left: auto;   /* centraliza a torre (agora é estreita) */
-        margin-right: auto;
+        position: relative;  /* centraliza o prédio (≈52% da largura da cena) na tela */
+        left: 50%;
+        translate: -52% 0;
       }
 
       /* Com left:50% a largura disponível vira metade do palco e o rótulo

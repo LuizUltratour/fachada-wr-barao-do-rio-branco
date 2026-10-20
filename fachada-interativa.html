@@ -829,7 +829,7 @@ function closeScreen() {
   else window.close();
 }
 
-$('#btn-close').addEventListener('click', closeScreen);
+$('#btn-close').addEventListener('click', goToLocation);   // fechar = mesma vista de "Conheça a localização"
 elBack.addEventListener('click', reset);
 $('#fi-loc-desktop').addEventListener('click', goToLocation);
 $('#fi-loc-mobile').addEventListener('click', goToLocation);
